@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import ovh.abbl.streamnode.models.AudioSlice;
 import ovh.abbl.streamnode.repositories.AudioRepository;
 import ovh.abbl.streamnode.services.FileStreamService;
+import ovh.abbl.streamnode.stream.FileSlicer;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -18,16 +20,18 @@ public class FileStreamServiceImpl implements FileStreamService {
     private SimpMessagingTemplate simpMessagingTemplate;
     @Autowired
     private AudioRepository audioRepository;
+    @Autowired
+    private FileSlicer fileSlicer;
+
 
     @Override
     @Async
     public void stream(Principal principal) {
         byte[] bytes = audioRepository.load("test.mp3");
+        ArrayList<AudioSlice> slices = fileSlicer.slice(Base64.getEncoder().encodeToString(bytes));
 
-        AudioSlice audioSlice = new AudioSlice();
-        audioSlice.setId(1);
-        audioSlice.setEncodedBytes(Base64.getEncoder().encodeToString(bytes));
-
-        simpMessagingTemplate.convertAndSendToUser(principal.getName(), "/topic/stream", audioSlice);
+        for(AudioSlice slice : slices){
+            simpMessagingTemplate.convertAndSendToUser(principal.getName(), "/topic/stream", slice);
+        }
     }
 }

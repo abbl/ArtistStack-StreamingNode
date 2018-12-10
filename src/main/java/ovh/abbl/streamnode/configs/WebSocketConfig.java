@@ -23,6 +23,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/endpoint").setAllowedOrigins("*").setHandshakeHandler(handshakeHandler()).withSockJS();
     }
 
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+        registry.setMessageSizeLimit(26214400); //25mb
+        registry.setSendBufferSizeLimit(26214400); //25mb
+    }
+
     @Bean
     public HandshakeHandler handshakeHandler(){
         return new WebSocketHandshakeHandler();
