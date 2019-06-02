@@ -29,4 +29,9 @@ public class AudioRepositoryImpl implements AudioRepository {
         }
         return null;
     }
+
+    @Override
+    public File getFile(String fileName) {
+        return new File(REPOSITORY_PATH + fileName);
+    }
 }

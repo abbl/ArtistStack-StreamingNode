@@ -33,4 +33,5 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.security:spring-security-test')
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile group: 'fr.delthas', name: 'javamp3', version: '1.0.1'
 }
