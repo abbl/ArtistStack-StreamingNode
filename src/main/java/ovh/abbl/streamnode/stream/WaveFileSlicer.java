@@ -12,6 +12,6 @@ public class WaveFileSlicer {
     }
 
     private int getDataSizeForGivenDuration(WaveFile waveFile, int sliceDuration){
-        return 0;//waveFile.getSampleRate() * waveFile.getNumberOfChannels() * (waveFile.getBitsPerSample() / 8) * sliceDuration;
+        return waveFile.getFmtHeader().getSampleRate() * waveFile.getFmtHeader().getNumberOfChannels() * (waveFile.getFmtHeader().getBitsPerSample() / 8) * sliceDuration;
     }
 }

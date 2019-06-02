@@ -6,6 +6,7 @@ import lombok.ToString;
 
 @Builder
 @Getter
+@ToString
 public class WaveFile {
     private RiffHeader riffHeader;
     private FmtHeader fmtHeader;

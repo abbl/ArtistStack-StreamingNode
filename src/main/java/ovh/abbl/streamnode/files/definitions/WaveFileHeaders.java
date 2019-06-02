@@ -15,7 +15,7 @@ public abstract class WaveFileHeaders {
     public static final ByteHeader SUBCHUNK_1_AUDIO_FORMAT = new ByteHeader(2, 8, ByteOrder.LITTLE_ENDIAN);
     public static final ByteHeader SUBCHUNK_1_CHANNELS_NUMBER = new ByteHeader(2, 10, ByteOrder.LITTLE_ENDIAN);
     public static final ByteHeader SUBCHUNK_1_SAMPLE_RATE = new ByteHeader(4, 12, ByteOrder.LITTLE_ENDIAN);
-    public static final ByteHeader SUBCHUNK_1_BYTE_RATE = new ByteHeader(4, 18, ByteOrder.LITTLE_ENDIAN);
+    public static final ByteHeader SUBCHUNK_1_BYTE_RATE = new ByteHeader(4, 16, ByteOrder.LITTLE_ENDIAN);
     public static final ByteHeader SUBCHUNK_1_BLOCK_ALIGN = new ByteHeader(2, 20, ByteOrder.LITTLE_ENDIAN);
     public static final ByteHeader SUBCHUNK_1_BITS_PER_SAMPLE = new ByteHeader(2, 22, ByteOrder.LITTLE_ENDIAN);
 
