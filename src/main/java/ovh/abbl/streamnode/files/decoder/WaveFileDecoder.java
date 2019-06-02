@@ -19,10 +19,11 @@ public class WaveFileDecoder {
             WaveFile.FmtHeader fmtHeader = readFmtHeader(getHeaderOffset("fmt ", waveFileInBytes), waveFileInBytes);
             WaveFile.DataHeader dataHeader = readDataHeader(getHeaderOffset("data", waveFileInBytes), waveFileInBytes);
 
-            System.out.println(riffHeader.toString());
-            System.out.println(fmtHeader.toString());
-            System.out.println(dataHeader.toString());
-
+            return WaveFile.builder()
+                    .riffHeader(riffHeader)
+                    .fmtHeader(fmtHeader)
+                    .dataHeader(dataHeader)
+                    .build();
         }else{
             //PRINT SOME ERROR ABOUT NOT FINDING A FILE.
         }
@@ -84,7 +85,7 @@ public class WaveFileDecoder {
         if(byteHeader.getHeaderLength() != -1){
             byteBuffer = ByteBuffer.wrap(getPartOfTheFile(headerOffset + byteHeader.getOffset(), headerOffset + byteHeader.getOffset() + byteHeader.getHeaderLength(), waveFileInBytes));
         }else{
-            byteBuffer = ByteBuffer.wrap(getPartOfTheFile(headerOffset + byteHeader.getOffset(), waveFileInBytes.length - headerOffset + byteHeader.getOffset(), waveFileInBytes));
+            byteBuffer = ByteBuffer.wrap(getPartOfTheFile(headerOffset + byteHeader.getOffset(), waveFileInBytes.length - 1, waveFileInBytes));
         }
         byteBuffer.order(byteHeader.getByteOrder());
 
