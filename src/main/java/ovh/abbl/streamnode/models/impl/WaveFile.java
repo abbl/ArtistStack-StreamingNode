@@ -1,25 +1,37 @@
-package ovh.abbl.streamnode.models;
+package ovh.abbl.streamnode.models.impl;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
+import ovh.abbl.streamnode.files.encoder.impl.WaveFileEncoder;
+import ovh.abbl.streamnode.models.SoundFile;
 
-@Builder
-@Getter
+@Builder(toBuilder = true)
+@Data
 @ToString
-public class WaveFile {
+public class WaveFile implements SoundFile {
+    @Autowired
+    private static WaveFileEncoder waveFileEncoder;
     private RiffHeader riffHeader;
     private FmtHeader fmtHeader;
     private DataHeader dataHeader;
 
-    @Builder
-    @Getter
+
+
+    @Override
+    public WaveFileEncoder getEncoder() {
+        return waveFileEncoder;
+    }
+
+    @Builder(toBuilder = true)
+    @Data
     @ToString
     public static class RiffHeader {
         private String chunkId;
         private int chunkSize;
         private String chunkFormat;
-
     }
 
     @Builder
@@ -36,8 +48,8 @@ public class WaveFile {
         private short bitsPerSample;
     }
 
-    @Builder
-    @Getter
+    @Builder(toBuilder = true)
+    @Data
     @ToString
     public static class DataHeader{
         private String subChunk2Id;

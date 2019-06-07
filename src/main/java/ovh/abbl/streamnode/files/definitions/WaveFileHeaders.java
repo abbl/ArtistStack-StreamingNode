@@ -22,4 +22,31 @@ public abstract class WaveFileHeaders {
     public static final ByteHeader SUBCHUNK_2_ID = new ByteHeader(4, 0, ByteOrder.BIG_ENDIAN);
     public static final ByteHeader SUBCHUNK_2_SIZE = new ByteHeader(4, 4, ByteOrder.LITTLE_ENDIAN);
     public static final ByteHeader SUBCHUNK_2_DATA = new ByteHeader(-1, 8, ByteOrder.LITTLE_ENDIAN);
+
+    public static int getRiffHeaderLength(){
+        return summarizeHeaderLength(RIFF_CHUNK_ID, RIFF_CHUNK_SIZE, RIFF_FORMAT);
+    }
+
+    public static int getSubChunkHeaderLength(){
+        return summarizeHeaderLength(SUBCHUNK_1_ID, SUBCHUNK_1_SIZE, SUBCHUNK_1_AUDIO_FORMAT, SUBCHUNK_1_CHANNELS_NUMBER,
+                 SUBCHUNK_1_SAMPLE_RATE, SUBCHUNK_1_BYTE_RATE, SUBCHUNK_1_BLOCK_ALIGN, SUBCHUNK_1_BITS_PER_SAMPLE);
+    }
+
+    public static int getUncompletedDataHeaderLength(){
+        return summarizeHeaderLength(SUBCHUNK_2_ID, SUBCHUNK_2_SIZE);
+    }
+
+    public static int getAllHeadersLength(){
+        return getRiffHeaderLength() + getSubChunkHeaderLength() + getUncompletedDataHeaderLength();
+    }
+
+    private static int summarizeHeaderLength(ByteHeader... byteHeaders){
+        int length = 0;
+
+        for(ByteHeader byteHeader : byteHeaders){
+            length += byteHeader.getHeaderLength();
+        }
+
+        return length;
+    }
 }

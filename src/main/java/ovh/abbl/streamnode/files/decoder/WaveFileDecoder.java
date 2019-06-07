@@ -2,7 +2,8 @@ package ovh.abbl.streamnode.files.decoder;
 
 import ovh.abbl.streamnode.files.definitions.ByteHeader;
 import ovh.abbl.streamnode.files.definitions.WaveFileHeaders;
-import ovh.abbl.streamnode.models.WaveFile;
+import ovh.abbl.streamnode.models.impl.WaveFile;
+import ovh.abbl.streamnode.tools.BinaryOperations;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class WaveFileDecoder {
     }
 
     private static int getHeaderOffset(String header, byte[] waveFileInBytes){
-        String bytesToString = new String(getPartOfTheFile(0, 512, waveFileInBytes), StandardCharsets.UTF_8);
+        String bytesToString = new String(BinaryOperations.getPartOfTheArray(0, 512, waveFileInBytes), StandardCharsets.UTF_8);
 
         return bytesToString.indexOf(header);
     }
@@ -82,20 +83,14 @@ public class WaveFileDecoder {
     private static ByteBuffer byteBufferWrap(int headerOffset, ByteHeader byteHeader, byte[] waveFileInBytes){
         ByteBuffer byteBuffer;
 
-        if(byteHeader.getHeaderLength() != -1){
-            byteBuffer = ByteBuffer.wrap(getPartOfTheFile(headerOffset + byteHeader.getOffset(), headerOffset + byteHeader.getOffset() + byteHeader.getHeaderLength(), waveFileInBytes));
+        if(byteHeader.getHeaderLength() != -1){ // -1 stands for length to the end of the file.
+            byteBuffer = ByteBuffer.wrap(BinaryOperations.getPartOfTheArray(headerOffset + byteHeader.getOffset(), headerOffset + byteHeader.getOffset() + byteHeader.getHeaderLength(), waveFileInBytes));
         }else{
-            byteBuffer = ByteBuffer.wrap(getPartOfTheFile(headerOffset + byteHeader.getOffset(), waveFileInBytes.length - 1, waveFileInBytes));
+            byteBuffer = ByteBuffer.wrap(BinaryOperations.getPartOfTheArray(headerOffset + byteHeader.getOffset(), waveFileInBytes.length - 1, waveFileInBytes));
         }
         byteBuffer.order(byteHeader.getByteOrder());
 
         return byteBuffer;
     }
 
-    private static byte[] getPartOfTheFile(int startIndex, int endIndex, byte[] waveFileInBytes){
-        byte[] slicedArray = new byte[endIndex - startIndex];
-        System.arraycopy(waveFileInBytes, startIndex, slicedArray, 0, slicedArray.length);
-
-        return slicedArray;
-    }
 }
