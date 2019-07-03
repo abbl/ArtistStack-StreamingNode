@@ -13,7 +13,7 @@ import ovh.abbl.streamnode.models.SoundFile;
 @ToString
 public class WaveFile implements SoundFile {
     @Autowired
-    private static WaveFileEncoder waveFileEncoder;
+    private WaveFileEncoder waveFileEncoder;
     private RiffHeader riffHeader;
     private FmtHeader fmtHeader;
     private DataHeader dataHeader;

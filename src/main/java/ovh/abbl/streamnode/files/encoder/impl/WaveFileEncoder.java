@@ -5,18 +5,8 @@ import ovh.abbl.streamnode.files.definitions.ByteHeader;
 import ovh.abbl.streamnode.files.definitions.WaveFileHeaders;
 import ovh.abbl.streamnode.files.encoder.SoundFileEncoder;
 import ovh.abbl.streamnode.models.impl.WaveFile;
-import ovh.abbl.streamnode.tools.BinaryOperations;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-/*
-         for(byte b : bytes){
-            System.out.format("0x%x ", b);
-        }
- */
 
 @Component
 public class WaveFileEncoder extends SoundFileEncoder {
@@ -24,7 +14,7 @@ public class WaveFileEncoder extends SoundFileEncoder {
     @Override
     public byte[] encode(WaveFile waveFile) {
         System.out.println("Count:" + waveFile.getRiffHeader().getChunkSize());
-        ByteBuffer byteBuffer = ByteBuffer.allocate(waveFile.getRiffHeader().getChunkSize());
+        ByteBuffer byteBuffer = ByteBuffer.allocate(waveFile.getRiffHeader().getChunkSize() + 8);
         byteBuffer.put(encodeRiffHeader(waveFile.getRiffHeader()));
         byteBuffer.put(encodeFmtHeader(waveFile.getFmtHeader()));
         byteBuffer.put(encodeDataHeader(waveFile.getDataHeader()));
